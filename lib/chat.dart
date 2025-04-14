@@ -57,6 +57,16 @@ class _ChatPageState extends State<ChatPage> {
         title: const Text('AskMyTutor'),
         backgroundColor: Color(0xff5F2C82),
         foregroundColor: Colors.white,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xff5F2C82),
+                Color(0xffA83279),],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
       ),
       body:SafeArea( // ✅ Keeps UI safe from notches and keyboard
     child: Column(

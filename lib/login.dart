@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:ask_my_tutor/home.dart';
+import 'package:ask_my_tutor/main_screen.dart';
 import 'package:ask_my_tutor/signUp.dart';
 import 'package:ask_my_tutor/uihelper.dart';
 import 'package:flutter/material.dart';
@@ -54,31 +55,12 @@ class LoginPageState extends State<LoginPage> {
     )
                   ),
     ),
-    // Top text
-    Positioned(
-    top: 80,
-    left: 30,
-    right: 30,
-    child: Column(
-    children: const [
-    Text(
-    "Let’s sign you in,",
-    style: TextStyle(fontSize: 22, color: Colors.black),
-    ),
-    SizedBox(height: 5),
-    Text(
-    "We’re waiting for you!",
-    style: TextStyle(fontSize: 22, color: Colors.black),
-    ),
-    ],
-    ),
-    ),
 
               // Login Card positioned in the center
               // Login Card
               Center(
                 child: Container(
-                  height: 500,
+                  height: 650,
                   width: 350,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -89,34 +71,33 @@ class LoginPageState extends State<LoginPage> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
+                        Center(
+                            child: Image.asset(
+                                'assets/images/Tutor.png')),
+                        const SizedBox(height: 10),
+                    Align(
+                      alignment: Alignment.center,
+                        child :Text(
+                          "WELCOME BACK !",
+                          style: TextStyle(fontSize: 22, color: Colors.white,fontWeight: FontWeight.w700),
+                        )),
+
                         const SizedBox(height: 15),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Text("Email Address", style: TextStyle(fontSize: 16,color: Colors.white)),
-                          ),
-                        ),
+
                         const SizedBox(height: 5),
                         UiHelper.CustomTextField1(
-                          EmailText, "youremail@gmail.com", Icons.email, false,
+                          EmailText, "Email", Icons.email, false,
                         ),
 
                         const SizedBox(height: 15),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Text("Password", style: TextStyle(fontSize: 16,color: Colors.white)),
-                          ),
-                        ),
+
                         const SizedBox(height: 5),
                         TextField(
                           controller: PasswordNum,
                           obscureText: _ObscureText,
                           decoration: InputDecoration(
-                            hintText: "********",
-                            hintStyle: TextStyle(color: Colors.white),
+                            labelText: "Password",
+                            labelStyle: TextStyle(color: Colors.white),
                             prefixIcon: const Icon(Icons.lock, color: Color(0xffD9D9D9)),
                             suffixIcon: IconButton(
                               icon: Icon(
@@ -156,7 +137,7 @@ class LoginPageState extends State<LoginPage> {
 
                         const SizedBox(height: 15),
                         UiHelper.CustomButton(() {
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AskMeHomePage()),);
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MainScreen()),);
                           // Add login logic
                         }, "Login"),
 
@@ -190,7 +171,7 @@ class LoginPageState extends State<LoginPage> {
                                 MaterialPageRoute(builder: (context) => const SignUpPage()),
                               );
                             },
-                            child: const Text("Sign up with Google"),
+                            child: const Text("Sign up "),
                           ),
                         ),
                       ],

@@ -21,6 +21,10 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
   late stt.SpeechToText _speech;
   String _spokenText = "";
 
+  // 🔥 Subjects for dropdown
+  final List<String> _subjects = ['General', 'Math', 'Programming', 'Science', 'History'];
+  String _selectedSubject = 'General';
+
   Future<void> sendPromptToGROQ(String prompt) async {
     final url = Uri.parse(doubt); // use your actual backend URL
 
@@ -30,7 +34,10 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'prompt': prompt}),
+        body: jsonEncode({
+          'prompt': prompt,
+          'subject': _selectedSubject, // 👈 Send subject to backend
+        }),
       );
 
       if (response.statusCode == 200) {
@@ -90,6 +97,16 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
         title: const Text('AskMe'),
         centerTitle: true,
         elevation: 0,
+        flexibleSpace: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xff5F2C82),
+              Color(0xffA83279),],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+      ),
 
       ),
       body: Padding(
@@ -108,6 +125,26 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
               'Your AI-powered tutor. Speak or snap a math problem and get instant help.',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16, color: Colors.black54),
+            ),
+            // 🔽 Subject Dropdown
+            const SizedBox(height: 30),
+            DropdownButtonFormField<String>(
+              value: _selectedSubject,
+              items: _subjects
+                  .map((subject) => DropdownMenuItem(
+                value: subject,
+                child: Text(subject),
+              ))
+                  .toList(),
+              decoration: InputDecoration(
+                labelText: 'Select Subject',
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  _selectedSubject = value!;
+                });
+              },
             ),
             Container(
               width: 360,
@@ -169,6 +206,19 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
               ),
             ),
             const SizedBox(height: 40),
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Color(0xffA83279)),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Text(
+                aiResponse ?? '',
+                style: const TextStyle(fontSize: 16),
+              ),
+            ),
+            const SizedBox(height: 40),
             ElevatedButton.icon(
               onPressed: () {
                 // Add voice input logic
@@ -196,19 +246,7 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
                 textStyle: const TextStyle(fontSize: 18),
               ),
             ),
-            const SizedBox(height: 40),
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Colors.orangeAccent),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Text(
-                aiResponse ?? '',
-                style: const TextStyle(fontSize: 16),
-              ),
-            ),
+
           ],
         ),
       ),

@@ -51,7 +51,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         backgroundColor: Colors.white,
         activeColor: Color(0xff5F2C82),
         inactiveColor: Colors.grey,
-        splashColor: Colors.deepOrangeAccent,
+        splashColor:Color(0xff5F2C82),
         onTap: (index) => setState(() => _selectedIndex = index),
       ),
     );

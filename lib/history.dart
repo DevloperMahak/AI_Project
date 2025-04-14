@@ -23,6 +23,16 @@ class HistoryPage extends StatelessWidget {
         foregroundColor: Colors.white,
         title: const Text('History'),
         centerTitle: true,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xff5F2C82),
+                Color(0xffA83279),],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(10),

@@ -1,3 +1,6 @@
+import 'package:ask_my_tutor/login.dart';
+import 'package:ask_my_tutor/main_screen.dart';
+import 'package:ask_my_tutor/uihelper.dart';
 import 'package:flutter/material.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -30,37 +33,107 @@ class _SignUpPageState extends State<SignUpPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Signed up successfully!')),
       );
+      Navigator.pushReplacement(context, MaterialPageRoute(builder:(context)=>LoginPage()));
     }
+  }
+  InputDecoration customInputDecoration({
+    required String label,
+    required IconData icon,
+    Widget? suffixIcon,
+  }) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(color: Colors.white),
+      prefixIcon: Icon(icon, color: Color(0xffD9D9D9)),
+      suffixIcon: suffixIcon,
+      errorStyle: const TextStyle(color: Color(0xFFF3E8FF)),
+      // Normal state
+      enabledBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: Color(0xffD9D9D9)),
+        borderRadius: BorderRadius.circular(30),
+      ),
+      // Focused state
+      focusedBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: Colors.white),
+        borderRadius: BorderRadius.circular(30),
+      ),
+      // Error state
+      errorBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: Color(0xFFF3E8FF)),
+        borderRadius: BorderRadius.circular(30),
+      ),
+      // Focused + Error state
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: Color(0xFFF3E8FF), width: 2),
+        borderRadius: BorderRadius.circular(30),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: true,
       appBar: AppBar(title: const Text("Sign Up")),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
+      body:      Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [
+              Color(0xff5F2C82),
+              Color(0xffA83279),
+            ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            )
+        ),
+   child:Center(
+    child: Container(
+    width: 350,
+    padding: const EdgeInsets.all(16),
+    decoration: BoxDecoration(
+    color: Colors.white.withOpacity(0.2),
+    borderRadius: BorderRadius.circular(30),
+    ),
+        child: Column(
+    children: [
+      Center(
+          child: Image.asset(
+              'assets/images/Tutor.png')),
+      const SizedBox(height: 10),
+      Align(
+          alignment: Alignment.center,
+          child :Text(
+            "CREATE YOUR ACCOUNT",
+            style: TextStyle(fontSize: 22, color: Colors.white,fontWeight: FontWeight.w700),
+          )),
+
+      const SizedBox(height: 15),
+
+       Form(
+           key: _formKey,
+           child: SingleChildScrollView(
+             child: Column(
+             children: [
               // Name
               TextFormField(
                 controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Name',
-                  border: OutlineInputBorder(),
+               style: const TextStyle(color: Colors.white),
+                decoration: customInputDecoration(
+                  label: 'Name',
+                  icon: Icons.person_rounded,
                 ),
                 validator: (value) =>
                 value == null || value.isEmpty ? 'Enter your name' : null,
               ),
+
               const SizedBox(height: 16),
 
               // Email
               TextFormField(
                 controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
+                style: const TextStyle(color: Colors.white),
+                decoration: customInputDecoration(
+                  label: 'Email',
+                  icon: Icons.email,
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -78,10 +151,11 @@ class _SignUpPageState extends State<SignUpPage> {
               // Password
               TextFormField(
                 controller: _passwordController,
+                style: const TextStyle(color: Colors.white),
                 obscureText: !_isPasswordVisible,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: const OutlineInputBorder(),
+                decoration: customInputDecoration(
+                  label: 'Password',
+                  icon: Icons.lock,
                   suffixIcon: IconButton(
                     icon: Icon(
                       _isPasswordVisible
@@ -93,6 +167,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         _isPasswordVisible = !_isPasswordVisible;
                       });
                     },
+                    color: Colors.white,
                   ),
                 ),
                 validator: (value) =>
@@ -103,14 +178,51 @@ class _SignUpPageState extends State<SignUpPage> {
               const SizedBox(height: 24),
 
               // Sign Up Button
-              ElevatedButton(
-                onPressed: _signUp,
-                child: const Text('Sign Up'),
-              ),
+               UiHelper.CustomButton(() {
+                 _signUp();
+                 // Add login logic
+               }, "Sign Up"),
+             const SizedBox(height: 10),
+             const Text(
+               "Already have an account ? Log In",
+               textAlign: TextAlign.center,
+               style: TextStyle(fontSize: 12,color: Colors.white),
+             ),
+             const SizedBox(height: 10),
+             const Divider(
+               height: 5,
+               thickness: 2,
+               color: Color(0xffB2B2B2),
+             ),
+             const SizedBox(height: 20),
+             SizedBox(
+               height: 48,
+               width: 300,
+               child: OutlinedButton(
+                 style: OutlinedButton.styleFrom(
+                   side: const BorderSide(color: Colors.white),
+                   foregroundColor:  Colors.white ,
+                   shape: RoundedRectangleBorder(
+                     borderRadius: BorderRadius.circular(5),
+                   ),
+                 ),
+                 onPressed: () {
+                   Navigator.push(
+                     context,
+                     MaterialPageRoute(builder: (context) => const SignUpPage()),
+                   );
+                 },
+                 child: const Text("Sign up with Google "),
+               ),
+             )
             ],
           ),
         ),
+       )
+    ])
       ),
+    ),
+      )
     );
   }
 }

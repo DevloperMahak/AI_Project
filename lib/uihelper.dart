@@ -12,7 +12,8 @@ class UiHelper{
                 controller: controller,
                 obscureText: toHide,
                 decoration: InputDecoration(
-                  hintText: text,
+                  labelText: text,
+                  labelStyle:TextStyle(color: Colors.white),
                   prefixIcon: Icon(iconData,color:Color(0xffD9D9D9) ,),
                   enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Color(0xffD9D9D9)),

@@ -11,6 +11,16 @@ class ProfilePage extends StatelessWidget {
         foregroundColor: Colors.white,
         title: const Text('My Profile'),
         centerTitle: true,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xff5F2C82),
+                Color(0xffA83279),],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
