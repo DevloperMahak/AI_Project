@@ -29,7 +29,9 @@ Briefly describe the real-world use case and the value it provides.
 - Mahak Gupta   
 - **GitHub:** https://github.com/DevloperMahak/AI_Project.git
 - **LinkedIn:** https://www.linkedin.com/in/mahak-gupta-88835226a
-- **Role:**
+- **Role:** Lead Developer and Project Owner
+            *(I am responsible for the full development cycle of the project, including design, implementation, and deployment. I am focusing on developing a real-time AI assistant with multilingual support using Flutter and GROQ. Additionally, I am handling integration with both text and image processing, ensuring optimal performance and user experience.)*
+            
  
 *(Add links if you want)*
 
