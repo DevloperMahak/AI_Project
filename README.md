@@ -27,9 +27,9 @@ Briefly describe the real-world use case and the value it provides.
 
 ### Team Members:  
 - Mahak Gupta (GitHub / LinkedIn / Role)  
-  **GitHub:** https://github.com/DevloperMahak/AI_Project.git
-  **LinkedIn:** https://www.linkedin.com/in/mahak-gupta-88835226a
-  **Role:**
+- **GitHub:** https://github.com/DevloperMahak/AI_Project.git
+- **LinkedIn:** https://www.linkedin.com/in/mahak-gupta-88835226a
+- **Role:**
  
 *(Add links if you want)*
 
