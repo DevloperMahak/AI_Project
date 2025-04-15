@@ -1,15 +1,20 @@
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const express = require('express');
+const connectDB = require('../config/db');
 const cors = require('cors');
 const userRoutes = require('../routes/userRoutes');
 
 const app = express();
+connectDB();
 const PORT = process.env.PORT || 5001;
 
 app.use(express.json());// Parses incoming JSON bodies
 app.use(cors());// Enables cross-origin requests
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// ✅ Serve uploads statically from root-level path
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
+
 app.use('/api/user', userRoutes);
 
 
