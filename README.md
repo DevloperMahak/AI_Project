@@ -48,7 +48,7 @@ Briefly describe the real-world use case and the value it provides.
 - Frontend: Flutter
 - Backend: Nodejs
 - Database: MongoDB
-- APIs:
+- APIs: Authentication API,GROQ,Tesseract.js
 - Hosting:
 
 ### Sponsor Technologies Used (if any):
