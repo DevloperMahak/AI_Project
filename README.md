@@ -2,7 +2,7 @@
 
 # 🚀 Project Title
 
-> A one-line tagline or mission statement for your project.
+> "Ask. Learn. Collaborate — Your AI Tutor & Study Buddy, All in One."
 
 ---
 
@@ -61,7 +61,7 @@ Briefly describe the real-world use case and the value it provides.
 Highlight the most important features of your project:
 
 - ✅ Feature 1  
-- ✅ Feature 2  
+- ✅ Collaborative Doubt Solving 
 - ✅ Feature 3  
 - ✅ Feature 4  
 
