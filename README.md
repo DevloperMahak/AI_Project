@@ -47,7 +47,7 @@ Briefly describe the real-world use case and the value it provides.
 - Hosting:
 
 ### Sponsor Technologies Used (if any):
-- ✅ **Groq:** _How you used Groq_  
+ ✅ **Groq:** _How you used Groq_  
 - [ ] **Monad:** _Your blockchain implementation_  
 - [ ] **Fluvio:** _Real-time data handling_  
 - [ ] **Base:** _AgentKit / OnchainKit / Smart Wallet usage_  
