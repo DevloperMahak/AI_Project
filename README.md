@@ -48,6 +48,7 @@ Briefly describe the real-world use case and the value it provides.
 - Frontend: Flutter
 - Backend: Nodejs
 - Database: MongoDB
+- UI/UX Designing: Figma
 - APIs: Authentication API,GROQ,Tesseract.js
 - Hosting:
 
