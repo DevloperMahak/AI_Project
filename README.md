@@ -25,8 +25,8 @@ Briefly describe the real-world use case and the value it provides.
 ### Team Name:  
     Tech Spark
 
-### Team Members:  
-- Mahak Gupta (GitHub / LinkedIn / Role)  
+### Team Members(Solo):  
+- Mahak Gupta   
 - **GitHub:** https://github.com/DevloperMahak/AI_Project.git
 - **LinkedIn:** https://www.linkedin.com/in/mahak-gupta-88835226a
 - **Role:**
