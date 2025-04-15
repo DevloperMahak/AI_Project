@@ -7,11 +7,9 @@
 ---
 
 ## 📌 Problem Statement
+ 
+Problem Statement 7 – Weave AI magic with Groq
 
-Select the problem statement number and title from the official list given in Participant Manual.
-
-**Example:**  
-**Problem Statement 7 – Transform the Future of Rural Commerce**
 
 ---
 
@@ -25,12 +23,11 @@ Briefly describe the real-world use case and the value it provides.
 ## 🧠 Team & Approach
 
 ### Team Name:  
-`Your team name here`
+    Tech Spark
 
 ### Team Members:  
-- Name 1 (GitHub / LinkedIn / Role)  
-- Name 2  
-- Name 3  
+- Mahak Gupta (GitHub / LinkedIn / Role)  
+ 
 *(Add links if you want)*
 
 ### Your Approach:  
@@ -43,14 +40,14 @@ Briefly describe the real-world use case and the value it provides.
 ## 🛠️ Tech Stack
 
 ### Core Technologies Used:
-- Frontend:
-- Backend:
-- Database:
+- Frontend: Flutter
+- Backend: Nodejs
+- Database: MongoDB
 - APIs:
 - Hosting:
 
 ### Sponsor Technologies Used (if any):
-- [ ] **Groq:** _How you used Groq_  
+- [✅] **Groq:** _How you used Groq_  
 - [ ] **Monad:** _Your blockchain implementation_  
 - [ ] **Fluvio:** _Real-time data handling_  
 - [ ] **Base:** _AgentKit / OnchainKit / Smart Wallet usage_  
