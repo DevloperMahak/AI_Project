@@ -124,8 +124,8 @@ Highlight the most important features of your project:
 
 - ✅ Multimodal Doubt Solving
 - ✅ Collaborative Learning & Doubt Solving 
-- ✅ Feature 3  
-- ✅ Feature 4  
+- ✅ AI-Powered Instant Responses 
+- ✅  Smart & Clean UI 
 
 Add images, GIFs, or screenshots if helpful!
 
