@@ -2,7 +2,9 @@
 
 # 🚀 Project Title
 
-> "Ask. Learn. Collaborate — Your AI Tutor & Study Buddy, All in One."
+> 
+ **Askmytutor**
+"Ask. Learn. Collaborate — Your AI Tutor & Study Buddy, All in One."
 
 ---
 
@@ -34,7 +36,7 @@ This solution bridges the gap between traditional tutoring and modern, interacti
 
 
  **🛠 Real-World Use Case:** 
-- A student clicks a photo of a math problem → gets the steps instantly.
+- A student give a text/voice/image input of a doubt problem → gets the solution response instantly through AI powered by GROQ .
 
 - A user types or speaks a programming error → gets AI guidance and can discuss it with peers.
 
