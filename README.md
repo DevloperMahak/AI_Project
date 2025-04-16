@@ -103,11 +103,14 @@ AskMyTutor was born to make learning faster, smarter, and more connected.
 ## 🛠️ Tech Stack
 
 ### Core Technologies Used:
-- Frontend: Flutter
-- Backend: Nodejs
+- Frontend: Flutter(Mobile UI)
+- Backend: Nodejs, Express.js
 - Database: MongoDB
 - UI/UX Designing: Figma
-- APIs: Authentication API,GROQ,Tesseract.js
+- Image Processing: Tesseract.js
+- APIs: Authentication API
+- AI: GROQ LLM API
+
 
 
 ### Sponsor Technologies Used (if any):
