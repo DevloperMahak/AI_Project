@@ -131,21 +131,26 @@ Add images, GIFs, or screenshots if helpful!
 ## 🧪 How to Run the Project
 
 ### Requirements:
-- Node.js / Python / Docker / etc.
-- API Keys (if any)
+- Node.js / flutter / mongoDB / Android studio etc.
+- API Keys (GROQ_API_KEY)
 - .env file setup (if needed)
 
 ### Local Setup:
 ```bash
 # Clone the repo
-git clone https://github.com/your-team/project-name
+git clone https://github.com/DevloperMahak/AI_Project.git
 
 # Install dependencies
-cd project-name
+cd ask_my_tutor
 npm install
 
-# Start development server
-npm run dev
+# To Start App
+flutter run
+
+# To Start Server
+cd askmytutor_backend
+cd src
+node server.js
 ```
 
 Provide any backend/frontend split or environment setup notes here.
