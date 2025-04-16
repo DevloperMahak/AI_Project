@@ -197,6 +197,14 @@ List improvements, extensions, or follow-up features:
 
 ## 🏁 Final Words
 
-Share your hackathon journey — challenges, learnings, fun moments, or shout-outs!
+Participating in HACKHAZARDS '25 was an incredible journey of learning, building, and pushing limits. From brainstorming ideas late into the night to debugging that one persistent error moments before submission—we experienced it all.
+
+We faced challenges like integrating real-time voice and image input with AI, ensuring seamless backend communication, and designing a user-friendly UI. But with every bug we crushed and every breakthrough we celebrated, we grew more confident in our solution.
+
+We’re proud of how AskMyTutor evolved—from an idea to a fully working AI-powered collaborative tutor. This project wasn’t just about code—it was about reimagining how students can learn together, faster and smarter.
+
+Big shout-out to our mentors, the organizing team, and everyone who helped test, review, and encourage us along the way. 💜
+
+We’re excited to take this beyond the hackathon and continue building a tool that empowers learners everywhere. 🚀
 
 ---
