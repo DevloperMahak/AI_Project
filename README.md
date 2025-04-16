@@ -18,6 +18,41 @@ Problem Statement 1 – Weave AI magic with Groq
 What problem does your project solve, and who does it serve?  
 Briefly describe the real-world use case and the value it provides.
 
+- **🧠Problem:** Students often struggle to get instant, accurate help with academic doubts—especially in subjects like Math, Science, and Programming—due to limited access to personal tutors, language barriers, and lack of interactive tools that support voice, image, and text inputs.
+
+- **💡Solution:** 
+I’m building a real-time AI-powered tutoring app where students can:
+
+✅ Solve doubts using AI through voice, image, and text input
+
+✅ Collaborate and discuss with others in a shared space
+
+✅ Get instant help with subject-specific prompts powered by GROQ’s advanced LLM
+
+✅ Experience an intuitive and responsive interface designed for students
+
+This solution bridges the gap between traditional tutoring and modern, interactive, AI-based learning.
+
+ **🛠 Real-World Use Case:** 
+A student clicks a photo of a math problem → gets the steps instantly.
+
+A user types or speaks a programming error → gets AI guidance and can discuss it with peers.
+
+Late-night study sessions become productive without needing a human tutor online.
+
+**Value It Provides:** 
+👩‍🎓 For Students:
+- **Instant Help, Anytime:** – No more waiting for a tutor or posting on forums. Get instant answers using voice, image, or text.
+
+- **Multimodal Doubt Solving:** – Students can speak, type, or upload an image of a problem. Perfect for math and complex diagrams.
+
+- **Collaborative Learning:** – Discuss and learn with peers in real-time, turning doubt solving into a social experience.
+
+- **Personalized Tutoring:** – The app tailors answers based on selected subjects like Math, Science, or Programming.
+
+- **Stress-Free Experience:** – Reduces academic anxiety by providing a judgment-free, always-available tutor.
+
+
 ---
 
 ## 🧠 Team & Approach
@@ -50,7 +85,7 @@ Briefly describe the real-world use case and the value it provides.
 - Database: MongoDB
 - UI/UX Designing: Figma
 - APIs: Authentication API,GROQ,Tesseract.js
-- Hosting:
+
 
 ### Sponsor Technologies Used (if any):
   ✅ **Groq:** _How you used Groq_  
@@ -66,8 +101,8 @@ Briefly describe the real-world use case and the value it provides.
 
 Highlight the most important features of your project:
 
-- ✅ Feature 1  
-- ✅ Collaborative Doubt Solving 
+- ✅ Multimodal Doubt Solving
+- ✅ Collaborative Learning & Doubt Solving 
 - ✅ Feature 3  
 - ✅ Feature 4  
 
