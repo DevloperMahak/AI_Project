@@ -72,30 +72,29 @@ This solution bridges the gap between traditional tutoring and modern, interacti
 *(Add links if you want)*
 
 ### Your Approach:  
-- 🔍 Why We Chose This Problem
+
+### 🔍 Why We Chose This Problem
 We noticed and also realised ourselves as a student that students often get stuck on difficult questions and struggle to find instant help—especially in subjects like math or science. Many existing platforms are either too slow, too complex, or lack interactivity. We wanted to create a solution that offers instant, intelligent doubt-solving through AI and also provides a space for real-time collaboration with fellow learners.
 
 AskMyTutor was born to make learning faster, smarter, and more connected.  
-- 🧩 Key Challenges We Addressed
-🧠 Real-time Doubt Solving: Integrating an LLM (GROQ) to instantly answer user questions via text or voice.
 
-🎙️ Speech-to-Text & Image OCR: Supporting multiple input modes for ease of use—students can ask via text, voice, or even by uploading handwritten question images.
+ ### 🧩 Key Challenges We Addressed
+- 🧠 Real-time Doubt Solving: Integrating an LLM (GROQ) to instantly answer user questions via text or voice.
 
-💬 Collaborative Chat Feature: Enabling peer-to-peer discussion within the app so students can learn from one another.
+- 🎙️ Speech-to-Text & Image OCR: Supporting multiple input modes for ease of use—students can ask via text, voice, or even by uploading handwritten question images.
 
-⚡ Fast & Accurate AI Responses: Ensuring our GROQ integration responds with speed and reliability.
+- 💬 Collaborative Chat Feature: Enabling peer-to-peer discussion within the app so students can learn from one another.
 
-🎨 Simple & Student-Friendly UI: Designed to be intuitive and visually friendly for students of all levels.
-- 🧩 Key Challenges We Addressed
-🧠 Real-time Doubt Solving: Integrating an LLM (GROQ) to instantly answer user questions via text or voice.
+- ⚡ Fast & Accurate AI Responses: Ensuring our GROQ integration responds with speed and reliability.
 
-🎙️ Speech-to-Text & Image OCR: Supporting multiple input modes for ease of use—students can ask via text, voice, or even by uploading handwritten question images.
+- 🎨 Simple & Student-Friendly UI: Designed to be intuitive and visually friendly for students of all levels.
 
-💬 Collaborative Chat Feature: Enabling peer-to-peer discussion within the app so students can learn from one another.
+### 🚀 Pivots, Brainstorms & Breakthroughs 
+- Initially, the focus was just on voice/image AI doubt-solving. But during hacking, we realized the real value lies in collaboration, so we pivoted to include group chat/discussion rooms.
 
-⚡ Fast & Accurate AI Responses: Ensuring our GROQ integration responds with speed and reliability.
+- Implementing GROQ provided a breakthrough in response speed and cost-effectiveness.
 
-🎨 Simple & Student-Friendly UI: Designed to be intuitive and visually friendly for students of all levels.
+- We also brainstormed a new way of handling OCR preprocessing using sharp (grayscale + thresholding + normalize + sharpen) for clearer text recognition before passing to Tesseract.js.
 
 ---
 
