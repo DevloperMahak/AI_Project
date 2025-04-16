@@ -15,8 +15,6 @@ Problem Statement 1 – Weave AI magic with Groq
 
 ## 🎯 Objective
 
-What problem does your project solve, and who does it serve?  
-Briefly describe the real-world use case and the value it provides.
 
  **🧠Problem:** Students often struggle to get instant, accurate help with academic doubts—especially in subjects like Math, Science, and Programming—due to limited access to personal tutors, language barriers, and lack of interactive tools that support voice, image, and text inputs.
 
@@ -36,11 +34,11 @@ This solution bridges the gap between traditional tutoring and modern, interacti
 
 
  **🛠 Real-World Use Case:** 
-A student clicks a photo of a math problem → gets the steps instantly.
+- A student clicks a photo of a math problem → gets the steps instantly.
 
-A user types or speaks a programming error → gets AI guidance and can discuss it with peers.
+- A user types or speaks a programming error → gets AI guidance and can discuss it with peers.
 
-Late-night study sessions become productive without needing a human tutor online.
+- Late-night study sessions become productive without needing a human tutor online.
 
 
 **Value It Provides:** 
