@@ -53,7 +53,7 @@ This solution bridges the gap between traditional tutoring and modern, interacti
 
 - **Stress-Free Experience:** – Reduces academic anxiety by providing a judgment-free, always-available tutor.
 
-
+**🏷️"Don’t just ask — collaborate, solve, and master with AskMyTutor."** 
 ---
 
 ## 🧠 Team & Approach
