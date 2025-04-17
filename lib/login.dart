@@ -3,7 +3,9 @@ import 'package:ask_my_tutor/home.dart';
 import 'package:ask_my_tutor/main_screen.dart';
 import 'package:ask_my_tutor/signUp.dart';
 import 'package:ask_my_tutor/uihelper.dart';
+import 'package:ask_my_tutor/url.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -32,7 +34,48 @@ class LoginPageState extends State<LoginPage> {
 
   bool _ObscureText = true;
 
+  Login(String email,String password)async{
+    if(email=="" || password==""){
+      UiHelper.CustomAlertBox(context, "Enter Required Fields");
+    }
+    else{
+      var data = {
+        "email": EmailText.text,
+        "password": PasswordNum.text,
+      };
+      try {
+        var response = await http.post(Uri.parse(login),
+            headers: {"Content-Type": "application/json"},
+            body: jsonEncode(data)
+        );
+        if (response.statusCode == 200) {
+          var jsonResponse = jsonDecode(response.body);
 
+          // Check if 'status' exists and is a boolean
+          bool status = jsonResponse['status'] ??
+              false; // Default to false if null or missing
+
+          if (status) {
+            var myToken = jsonResponse['token'];
+            prefs.setString('token', myToken);
+            final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+            sharedPreferences.setString('email', EmailText.text);
+            Navigator.push(
+                context, MaterialPageRoute(
+                builder: (context) => MainScreen()));
+            print('login successful');
+          } else {
+            UiHelper.CustomAlertBox(context, "Something went wrong.");
+          }
+        }else {
+          UiHelper.CustomAlertBox(context, "Invalid Email Or Password.");
+        }
+      }catch (e) {
+        print("Error occurred: $e");
+        UiHelper.CustomAlertBox(context, "Server error, try again later.");
+      }
+    }
+  }
 
 
 
@@ -95,6 +138,7 @@ class LoginPageState extends State<LoginPage> {
                         TextField(
                           controller: PasswordNum,
                           obscureText: _ObscureText,
+                          style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             labelText: "Password",
                             labelStyle: TextStyle(color: Colors.white),
@@ -137,8 +181,8 @@ class LoginPageState extends State<LoginPage> {
 
                         const SizedBox(height: 15),
                         UiHelper.CustomButton(() {
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MainScreen()),);
                           // Add login logic
+                          Login(EmailText.text.toString(), PasswordNum.text.toString());
                         }, "Login"),
 
                         const SizedBox(height: 10),
