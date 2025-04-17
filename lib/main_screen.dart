@@ -1,6 +1,6 @@
 import 'package:ask_my_tutor/userprofile.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 
 import 'chat.dart';
@@ -16,6 +16,8 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   int _selectedIndex = 0;
+  FlutterTts flutterTts = FlutterTts(); // Initialize flutter_tts instance
+  bool _isSpeaking = false; // Track if TTS is speaking
 
   final List<Widget> _pages = const [AskMeHomePage(), HistoryPage(),ChatPage(), ProfilePage()];
 
@@ -27,6 +29,38 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   ];
 
   @override
+  void initState() {
+    super.initState();
+
+    // Set handlers to track speech state
+    flutterTts.setStartHandler(() {
+      setState(() {
+        _isSpeaking = true;
+      });
+    });
+
+    flutterTts.setCompletionHandler(() {
+      setState(() {
+        _isSpeaking = false;
+      });
+    });
+
+    flutterTts.setCancelHandler(() {
+      setState(() {
+        _isSpeaking = false;
+      });
+    });
+  }
+
+  // Function to speak the answer
+  void _speakAnswer(String answer) async {
+    await flutterTts.setLanguage("en-US"); // Set the language of speech
+    await flutterTts.setPitch(1.0); // Set the pitch of speech (optional)
+    await flutterTts.speak(answer); // Speak the answer text
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = Theme.of(context).scaffoldBackgroundColor;
@@ -35,11 +69,43 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     return Scaffold(
       extendBody: true,
       body: _pages[_selectedIndex],
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xff5F2C82),
-        child: const Icon(Icons.mic,color: Colors.grey,),
-        onPressed: () {
-          // Future voice feature
+      resizeToAvoidBottomInset: false,  // Prevents the FAB from moving up with the keyboard
+      floatingActionButton: TweenAnimationBuilder<double>(
+        tween: Tween<double>(begin: 0.0, end: _isSpeaking ? 20.0 : 0.0),
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        builder: (context, glow, child) {
+    return Container(
+    padding: const EdgeInsets.all(4),
+    decoration: BoxDecoration(
+    gradient: LinearGradient(
+    colors: [Color(0xff5F2C82), Color(0xffA83279)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    ),
+    borderRadius: BorderRadius.circular(50),
+    boxShadow: [
+    if (_isSpeaking)
+    BoxShadow(
+    color: Colors.deepPurpleAccent.withOpacity(0.6),
+    blurRadius: glow,
+    spreadRadius: glow / 3,
+    ),
+    ],
+    ),
+        child: FloatingActionButton(
+          backgroundColor: Colors.transparent, // Make the FAB background transparent
+          child: const Icon(
+            Icons.mic,
+            color: Colors.white, // Icon color
+          ),
+          onPressed: () {
+            // Future voice feature
+            String answer = "Hello, this is your answer!";
+            _speakAnswer(answer);  // Speak the answer aloud
+          },
+        ),
+      );
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

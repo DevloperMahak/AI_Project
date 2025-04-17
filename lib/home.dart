@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'dart:typed_data';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:image/image.dart' as img;
+import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
 import 'package:ask_my_tutor/theme_provider.dart';
 import 'package:ask_my_tutor/url.dart';
 import 'package:flutter/material.dart';
@@ -10,24 +13,41 @@ import 'package:provider/provider.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 class AskMeHomePage extends StatefulWidget {
+
   const AskMeHomePage({Key? key}) : super(key: key);
 
   @override
   State<AskMeHomePage> createState() => _AskMeHomePageState();
 }
 
+
 class _AskMeHomePageState extends State<AskMeHomePage> {
   String? aiResponse = "Hi! I'm your tutor. Ask me anything using voice or image.";
   final TextEditingController _textController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
-  File? _pickedImage;
+  File? _pickedImage ;
   bool _isListening = false;
   late stt.SpeechToText _speech;
   String _spokenText = "";
+  int _rotationAngle = 0; // degrees
+
+// Text-to-Speech instance
+  FlutterTts _flutterTts = FlutterTts();
 
   // 🔥 Subjects for dropdown
   final List<String> _subjects = ['General', 'Math', 'Programming', 'Science', 'History'];
   String _selectedSubject = 'General';
+
+  @override
+  void initState() {
+    super.initState();
+    _speech = stt.SpeechToText();
+
+    // Initialize Text-to-Speech
+    _flutterTts.setLanguage("en-US");  // You can set the language to your preference
+    _flutterTts.setSpeechRate(0.5);  // Adjust the speech rate if needed
+    _flutterTts.setVolume(1.0);  // Set the volume to maximum
+  }
 
   void _showImagePickerOptions() {
     showModalBottomSheet(
@@ -64,27 +84,39 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
       ),
     );
   }
+
   Future<void> _pickImageFromCamera() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.camera);
     if (pickedFile != null) {
+      // Auto-fix image orientation
+      final fixedImage = await FlutterExifRotation.rotateImage(path: pickedFile.path);
       setState(() {
-        _pickedImage = File(pickedFile.path);
+        _pickedImage = File(fixedImage.path);  // Set the fixed image
         aiResponse = "Processing image...";
       });
-      _sendImageToBackend();
+      _sendImageToBackend();  // Align image and send it
     }
   }
 
   Future<void> _pickImageFromGallery() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
+      // Auto-fix image orientation
+      final fixedImage = await FlutterExifRotation.rotateImage(path: pickedFile.path);
       setState(() {
-        _pickedImage = File(pickedFile.path);
+        _pickedImage = File(fixedImage.path);  // Set the fixed image
         aiResponse = "Processing image...";
       });
-      _sendImageToBackend();
+      _sendImageToBackend(); // Align image and send it
     }
   }
+
+  void _speakAnswer(String answer) async {
+    if (answer.isNotEmpty) {
+      await _flutterTts.speak(answer);  // Speak the answer aloud
+    }
+  }
+
 
   Future<void> _sendImageToBackend() async {
     final uri = Uri.parse(doubt_img); // Your endpoint
@@ -98,6 +130,7 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
       print("🧠 Backend response: $respStr");
       final data = jsonDecode(respStr);
       setState(() {
+        _textController.text = data['extractedText'] ?? "No text extracted.";  // Set the extracted text in the input box
         aiResponse = data['answer'] ?? "No answer received.";
       });
     } catch (e) {
@@ -129,6 +162,10 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
         setState(() {
           aiResponse = data['answer']; // display the AI's response
         });
+
+        // Call _speakAnswer to speak the response
+        _speakAnswer(aiResponse!);  // Ensure the answer is not null
+
       } else {
         print('Status code: ${response.statusCode}');
         print('Response body: ${response.body}');
@@ -141,11 +178,6 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
         aiResponse = 'Error connecting to server: $e';
       });
     }
-  }
-  @override
-  void initState() {
-    super.initState();
-    _speech = stt.SpeechToText();
   }
 
   void _startListening() async {
@@ -232,6 +264,32 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
                 });
               },
             ),
+            const SizedBox(height: 30),
+
+            if (_pickedImage != null)
+              Column(
+                children: [
+                  const SizedBox(height: 20),
+                  Image.file(_pickedImage!, height: 200),
+
+
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _rotationAngle = (_rotationAngle + 90) % 360;
+                          });
+                          _sendImageToBackend(); // realign and resend
+                        },
+                        child: const Text("Rotate 90°"),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
 
             const SizedBox(height: 30),
 
@@ -291,7 +349,7 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
                             IconButton(
                               icon: Icon(
                                 _isListening ? Icons.mic : Icons.mic_none,
-                                color: _isListening ? Colors.red : const Color(0xff3D4652),
+                                color: _isListening ? Color(0xffA83279) : const Color(0xff3D4652),
                               ),
                               onPressed: () {
                                 _isListening ? _stopListening() : _startListening();
@@ -327,8 +385,6 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
               ),
             ),
 
-
-
           ],
         ),
       ),
@@ -336,4 +392,5 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
     );
   }
 }
+
 
