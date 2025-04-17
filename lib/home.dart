@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:ask_my_tutor/theme_provider.dart';
 import 'package:ask_my_tutor/url.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
@@ -17,6 +19,8 @@ class AskMeHomePage extends StatefulWidget {
 class _AskMeHomePageState extends State<AskMeHomePage> {
   String? aiResponse = "Hi! I'm your tutor. Ask me anything using voice or image.";
   final TextEditingController _textController = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
+  File? _pickedImage;
   bool _isListening = false;
   late stt.SpeechToText _speech;
   String _spokenText = "";
@@ -24,6 +28,86 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
   // 🔥 Subjects for dropdown
   final List<String> _subjects = ['General', 'Math', 'Programming', 'Science', 'History'];
   String _selectedSubject = 'General';
+
+  void _showImagePickerOptions() {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => Container(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+        height: 200,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Choose an option", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10),
+            ListTile(
+              leading: Icon(Icons.camera_alt),
+              title: Text("Take a Photo"),
+              onTap: () {
+                Navigator.pop(context);
+                _pickImageFromCamera();
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.photo_library),
+              title: Text("Choose from Gallery"),
+              onTap: () {
+                Navigator.pop(context);
+                _pickImageFromGallery();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  Future<void> _pickImageFromCamera() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      setState(() {
+        _pickedImage = File(pickedFile.path);
+        aiResponse = "Processing image...";
+      });
+      _sendImageToBackend();
+    }
+  }
+
+  Future<void> _pickImageFromGallery() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _pickedImage = File(pickedFile.path);
+        aiResponse = "Processing image...";
+      });
+      _sendImageToBackend();
+    }
+  }
+
+  Future<void> _sendImageToBackend() async {
+    final uri = Uri.parse(doubt_img); // Your endpoint
+    var request = http.MultipartRequest('POST', uri)
+      ..fields['subject'] = _selectedSubject
+      ..files.add(await http.MultipartFile.fromPath('image', _pickedImage!.path));
+
+    try {
+      final response = await request.send();
+      final respStr = await response.stream.bytesToString();
+      print("🧠 Backend response: $respStr");
+      final data = jsonDecode(respStr);
+      setState(() {
+        aiResponse = data['answer'] ?? "No answer received.";
+      });
+    } catch (e) {
+      setState(() {
+        aiResponse = 'Error sending image: $e';
+      });
+    }
+  }
+
+
 
   Future<void> sendPromptToGROQ(String prompt) async {
     final url = Uri.parse(doubt); // use your actual backend URL
@@ -109,14 +193,15 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
       ),
 
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
+      body:SafeArea(
+    child: SingleChildScrollView(
+    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 30),
             const Text(
-              'Welcome to AskMe!',
+              'Welcome to AskMyTutor!',
               style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
@@ -128,6 +213,7 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
             ),
             // 🔽 Subject Dropdown
             const SizedBox(height: 30),
+
             DropdownButtonFormField<String>(
               value: _selectedSubject,
               items: _subjects
@@ -146,110 +232,107 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
                 });
               },
             ),
-            Container(
-              width: 360,
-              height: 55,
-              margin: EdgeInsets.only(top: 50),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(30))
-              ),
-              child: TextField(
-                controller: _textController,
-                readOnly: false, //This allows both voice and manual input.
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search, color: Color(0xff3D4652), size: 20),
-                  suffixIcon: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: Icon(
-                          _isListening ? Icons.mic : Icons.mic_none,
-                          color: _isListening ? Colors.red : Color(0xff3D4652),
-                        ),
-                        onPressed: () {
-                          if (_isListening) {
-                            _stopListening();
-                          } else {
-                            _startListening();
-                          }
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.send, color: Color(0xff3D4652)),
-                        onPressed: () {
-                          final input = _textController.text.trim();
-                          if (input.isNotEmpty) {
-                            setState(() {
-                              aiResponse = "Thinking...";
-                            });
-                            sendPromptToGROQ(input);
-                          }
-                        },
-                      ),
-                    ],
-                  ),
 
-                  hintText: 'Ask Your Doubt Here',
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(30)),
-                      borderSide: BorderSide(
-                          color: Colors.white
-                      )),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(30)),
-                      borderSide: BorderSide(color: Color(0xff5F2C82))),
-                ),
-              ),
-            ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 30),
+
+            // Combined Question + Answer Container
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: Colors.white,
-                border: Border.all(color: Color(0xffA83279)),
-                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: const Color(0xffA83279)),
+                borderRadius: BorderRadius.circular(20),
               ),
-              child: Text(
-                aiResponse ?? '',
-                style: const TextStyle(fontSize: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (_textController.text.trim().isNotEmpty) ...[
+                    const Text(
+                      "Your Question:",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xff5F2C82),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      _textController.text,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    const Divider(height: 30, thickness: 1),
+                  ],
+                  const Text(
+                    "Tutor's Answer:",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xffA83279),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    aiResponse ?? '',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 20),
+                  // Input Field inside the container
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: TextField(
+                      controller: _textController,
+                      decoration: InputDecoration(
+                        hintText: 'Ask Your Doubt Here',
+                        prefixIcon: const Icon(Icons.search, color: Color(0xff3D4652)),
+                        suffixIcon: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                _isListening ? Icons.mic : Icons.mic_none,
+                                color: _isListening ? Colors.red : const Color(0xff3D4652),
+                              ),
+                              onPressed: () {
+                                _isListening ? _stopListening() : _startListening();
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.camera_alt, color: Color(0xff3D4652)),
+                              onPressed: () {
+                                // TODO: Add image picker logic here
+                                _showImagePickerOptions();
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.send, color: Color(0xff3D4652)),
+                              onPressed: () {
+                                final input = _textController.text.trim();
+                                if (input.isNotEmpty) {
+                                  setState(() {
+                                    aiResponse = "Thinking...";
+                                  });
+                                  sendPromptToGROQ(input);
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                        border: InputBorder.none,
+                        contentPadding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 40),
-            ElevatedButton.icon(
-              onPressed: () {
-                // Add voice input logic
-              },
-              icon: const Icon(Icons.mic,color: Colors.white,),
-              label: const Text('Ask by Voice'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xff5F2C82),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                textStyle: const TextStyle(fontSize: 18),
-              ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton.icon(
-              onPressed: () {
-                // Add image upload logic
-              },
-              icon: const Icon(Icons.camera_alt,color: Colors.white,),
-              label: const Text('Upload Image'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor:  Color(0xffA83279),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                textStyle: const TextStyle(fontSize: 18),
-              ),
-            ),
+
+
 
           ],
         ),
       ),
+      )
     );
   }
 }
