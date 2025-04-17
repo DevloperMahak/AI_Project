@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:ask_my_tutor/login.dart';
 import 'package:ask_my_tutor/main_screen.dart';
 import 'package:ask_my_tutor/uihelper.dart';
+import 'package:ask_my_tutor/url.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -19,9 +23,67 @@ class _SignUpPageState extends State<SignUpPage> {
 
   bool _isPasswordVisible = false;
 
+  Signup(String name,String email,String password)async {
+    // Common validation
+    if (_nameController.text.isEmpty ||_emailController.text.isEmpty || _passwordController.text.isEmpty ) {
+      UiHelper.CustomAlertBox(context, "Please fill all required fields");
+      return;
+    }
+
+    // Check if email is valid
+    if (!RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$").hasMatch(
+        _emailController.text)) {
+      UiHelper.CustomAlertBox(context, "Please enter a valid email address");
+      return;
+    }
+
+// Prepare data for Signup API request
+    var data={
+      "name":_nameController.text.trim(),
+      "email": _emailController.text.trim(),
+      "password": _passwordController.text.trim(),
+    };
+    print("Sending data: $data");
+
+    try {
+      // Send POST request to registration endpoint
+      final response = await http.post(Uri.parse(sign_up),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode(data)
+      );
+
+      // Check for successful registration response
+      if (response.statusCode == 200) {
+        print('Signing up successful');
+        print(response);
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Signed up successfully!')),
+        );
+        // You could navigate to the login page or show a success message
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => LoginPage()),
+        );
+      } else {
+        print('Signing up failed');
+        UiHelper.CustomAlertBox(
+            context, "Signing up failed, please try again");
+      }
+    }catch(e){
+      // Catch any errors during the API call
+      print('Error during Signing up: $e');
+      UiHelper.CustomAlertBox(context, "An error occurred, please try again later");
+    }
+  }
+
   void _signUp() {
     if (_formKey.currentState!.validate()) {
+
       // Add your sign-up logic here (e.g. API call)
+      Signup( _nameController.text.toString(),
+        _emailController.text.toString(),
+        _passwordController.text.toString(),);
+
       final name = _nameController.text;
       final email = _emailController.text;
       final password = _passwordController.text;
@@ -30,10 +92,6 @@ class _SignUpPageState extends State<SignUpPage> {
       print('Email: $email');
       print('Password: $password');
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Signed up successfully!')),
-      );
-      Navigator.pushReplacement(context, MaterialPageRoute(builder:(context)=>LoginPage()));
     }
   }
   InputDecoration customInputDecoration({
@@ -179,7 +237,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
               // Sign Up Button
                UiHelper.CustomButton(() {
-                 _signUp();
+                _signUp();
                  // Add login logic
                }, "Sign Up"),
              const SizedBox(height: 10),
