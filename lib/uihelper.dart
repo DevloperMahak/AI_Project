@@ -11,6 +11,7 @@ class UiHelper{
             child:TextField(
                 controller: controller,
                 obscureText: toHide,
+                style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   labelText: text,
                   labelStyle:TextStyle(color: Colors.white),
