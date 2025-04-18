@@ -1,4 +1,5 @@
 const Tesseract = require('tesseract.js');
+const { PSM } = Tesseract; 
 const path = require('path');
 const axios = require('axios');
 const User = require('../models/signup_model');
@@ -14,7 +15,13 @@ const performOCR = async (imagePath) => {
   // Tesseract OCR processing with logging and better error handling
   const result = await Tesseract.recognize(fullPath, 'eng', {
     logger: m => console.log(m), // Optional: Logs OCR progress
+    tessedit_pageseg_mode: Tesseract.PSM.SINGLE_BLOCK,  // or try PSM.SPARSE_TEXT
+    tessedit_char_whitelist: '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+-*/=<>():,.%',
   });
+
+  // ✅ Log raw OCR result before any cleanup
+  console.log("Raw OCR Output:", result.data.text);
+  
   if (result && result.data && result.data.text) {
     return result.data.text.trim(); // Return trimmed text from OCR
   } else {

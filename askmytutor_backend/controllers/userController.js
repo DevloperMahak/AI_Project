@@ -14,6 +14,8 @@ const preprocessImage = async (imagePath) => {
       .resize({ width: 1000 })  // Resize the image to a manageable size
       .grayscale()  // Convert the image to grayscale
       .normalize()  // Improve contrast
+      .threshold(150)            // ADD THIS: force high contrast
+      .linear(1.5, -10)  // Increase contrast and brightness (optional)
       .sharpen()
       .toFile(processedImagePath);
 
@@ -28,6 +30,7 @@ const preprocessImage = async (imagePath) => {
 const extractTextFromImage = async (req, res) => {
   try {
     const imagePath = req.file.path;
+    console.log('Uploaded file:', req.file);
 
     // Preprocess the image to improve OCR accuracy
     const processedImagePath = await preprocessImage(imagePath);

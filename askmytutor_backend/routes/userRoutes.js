@@ -35,4 +35,5 @@ router.post('/signup', signupUser);
 // Route to handle user login
 router.post('/login', loginUserController);
 
+
 module.exports = router;
