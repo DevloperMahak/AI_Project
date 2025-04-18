@@ -42,7 +42,13 @@ app.get('/', (req, res) => {
 
 
 app.use(express.json());// Parses incoming JSON bodies
-app.use(cors());// Enables cross-origin requests
+
+// Allow requests from your frontend URL
+app.use(cors(
+  {
+    origin: 'https://askmytutor-c8x0vvyrt-devlopermahaks-projects.vercel.app',  // replace with your frontend URL
+  }
+));// Enables cross-origin requests
 
 // ✅ Serve uploads statically from root-level path
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
