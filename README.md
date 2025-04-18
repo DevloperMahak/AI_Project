@@ -186,17 +186,83 @@ Provide any backend/frontend split or environment setup notes here.
 
 List improvements, extensions, or follow-up features:
 
-- 📈 More integrations  
-- 🛡️ Security enhancements  
-- 🌐 Localization / broader accessibility  
+## 📈 More Integrations
+- Google Classroom / Microsoft Teams Integration for direct doubt sharing
+
+- Notion / Obsidian Sync for automatic note generation from discussions
+
+- Cloud Storage Integration (Google Drive, Dropbox) for saving shared study resources
+
+- Voice-to-Note Export using Whisper/GROQ to generate notes from discussions
+
+## 🛡️ Security Enhancements
+- JWT Authentication for secure user sessions
+
+- Role-based Access Control (RBAC) for tutors, students, and guests
+
+- Real-Time Moderation AI to filter inappropriate messages/images
+
+- Data Encryption at Rest and in Transit
+
+- 2FA (Two-Factor Authentication) for account protection
+
+## 🌐 Localization / Broader Accessibility
+- Multilingual UI and AI Support (support for major Indian and global languages)
+
+- Voice Input in Regional Languages using Whisper or Speech-to-Text APIs
+
+- Text-to-Speech Responses for visually impaired users (already added)
+
+- Accessibility Features:
+
+  - High-contrast mode
+
+  - Screen-reader friendly UI
+
+  - Keyboard-only navigation
+
+- Tutor Feedback System  
 
 ---
 
 ## 📎 Resources / Credits
 
-- APIs or datasets used  
-- Open source libraries or tools referenced  
-- Acknowledgements  
+## 🔗 APIs & Datasets Used
+- GROQ API – for natural language understanding, chat, and doubt resolution
+
+- Socket.IO – for real-time collaborative chat
+
+- Google Cloud Vision / Tesseract.js – for OCR (image-to-text) from handwritten queries
+
+- Whisper (OpenAI) – for voice-to-text conversion (speech input)
+
+- Node.js + Express – for backend API handling
+
+- MongoDB Atlas – as the database for storing user data and chat history
+
+## 🧰 Open Source Libraries & Tools Referenced
+- Flutter – for building a beautiful cross-platform mobile/web app
+
+- Socket.IO Client (Flutter) – for real-time communication
+
+- GetX – state management and localization
+
+- Multer + Sharp – for image upload and preprocessing on the backend
+
+- dotenv – for managing environment variables securely
+
+- CORS & Helmet – for backend security headers
+
+- Vercel / Render – for web frontend and backend hosting
+
+## 🙌 Acknowledgements
+- OpenAI / GROQ Community – for making powerful LLMs accessible
+
+- Flutter & Dart Dev Community – for excellent plugins, support, and documentation
+
+- HackHazards ‘25 Team – for organizing the hackathon and providing a great platform
+
+- Mentors & Peers – for their continuous feedback and support during development
 
 ---
 
