@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:ask_my_tutor/home.dart';
 import 'package:ask_my_tutor/main_screen.dart';
 import 'package:ask_my_tutor/signUp.dart';
 import 'package:ask_my_tutor/uihelper.dart';
@@ -72,7 +71,7 @@ class LoginPageState extends State<LoginPage> {
         }
       }catch (e) {
         print("Error occurred: $e");
-        UiHelper.CustomAlertBox(context, "Server error, try again later.");
+        UiHelper.CustomAlertBox(context, "Server error, try again later. \n$e");
       }
     }
   }
@@ -152,6 +151,7 @@ class LoginPageState extends State<LoginPage> {
                                   _ObscureText = !_ObscureText;
                                 });
                               },
+                              color: Colors.white,
                             ),
                             enabledBorder:  OutlineInputBorder(
                               borderSide: BorderSide(color: Color(0xffD9D9D9)),

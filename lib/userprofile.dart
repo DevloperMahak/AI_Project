@@ -1,7 +1,52 @@
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ask_my_tutor/url.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  String name = '';
+  String email = '';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserDetails();
+  }
+
+  Future<void> fetchUserDetails() async {
+    final prefs = await SharedPreferences.getInstance();
+    final storedEmail = prefs.getString('user_email');
+
+    print('Stored Email: $storedEmail'); // Debugging
+
+    if (storedEmail != null) {
+      final response = await http.get(
+        Uri.parse('$details?email=$storedEmail'),
+      );
+
+      print('Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}'); // 👈 DEBUG print
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        print('Decoded Data: $data'); // 👈 Check what’s inside
+        setState(() {
+          name = data['name'] ?? '';
+          email = data['email'] ?? '';
+        });
+      } else {
+        print('Failed to load user details');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,25 +71,26 @@ class ProfilePage extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
+            const SizedBox(height: 15),
             const CircleAvatar(
               radius: 50,
               backgroundImage: AssetImage(
-                'assets/profile.jpg',
+                'assets/images/Profile.png',
               ), // Add your image
             ),
             const SizedBox(height: 15),
-            const Text(
-              'John Doe',
+             Text(
+              name.isNotEmpty ? name : 'User Name',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const Text(
-              'Student | AskMe User',
+              'Student | AskMyTutor User',
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
             const SizedBox(height: 30),
             ListTile(
               leading: const Icon(Icons.email, color: Color(0xff5F2C82)),
-              title: const Text('john.doe@example.com'),
+              title: Text(email.isNotEmpty ? email : 'Youremail@gmail.com'),
             ),
             ListTile(
               leading: const Icon(Icons.settings, color: Color(0xff5F2C82)),

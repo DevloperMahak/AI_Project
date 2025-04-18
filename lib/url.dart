@@ -3,3 +3,4 @@ final doubt = url + "ask";
 final doubt_img = url + "upload-image";
 final sign_up = url + "signup";
 final login = url + "login";
+final details = url + "user";

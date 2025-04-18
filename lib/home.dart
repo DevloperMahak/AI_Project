@@ -1,15 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:image/image.dart' as img;
 import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
-import 'package:ask_my_tutor/theme_provider.dart';
 import 'package:ask_my_tutor/url.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 class AskMeHomePage extends StatefulWidget {
@@ -210,7 +206,7 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
       appBar: AppBar(
         backgroundColor: Color(0xff5F2C82),
         foregroundColor: Colors.white,
-        title: const Text('AskMe'),
+        title: const Text('AskMyTutor'),
         centerTitle: true,
         elevation: 0,
         flexibleSpace: Container(
@@ -232,6 +228,10 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 30),
+            Center(
+                child: Image.asset(
+                    'assets/images/Technical support wearing glasses.png')),
+            const SizedBox(height: 30),
             const Text(
               'Welcome to AskMyTutor!',
               style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
@@ -239,7 +239,7 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
             ),
             const SizedBox(height: 10),
             const Text(
-              'Your AI-powered tutor. Speak or snap a math problem and get instant help.',
+              'Your AI-powered tutor. Speak or snap a any subject problem and get instant help.',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16, color: Colors.black54),
             ),

@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ask_my_tutor/login.dart';
 import 'package:ask_my_tutor/main_screen.dart';
 import 'package:ask_my_tutor/uihelper.dart';
@@ -51,6 +51,11 @@ class _SignUpPageState extends State<SignUpPage> {
           headers: {"Content-Type": "application/json"},
           body: jsonEncode(data)
       );
+
+      // ✅ Store email in SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('user_email', _emailController.text.trim());
+
 
       // Check for successful registration response
       if (response.statusCode == 200) {

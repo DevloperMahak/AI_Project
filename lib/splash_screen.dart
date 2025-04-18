@@ -41,7 +41,7 @@ class SplashScreenPage extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xffEBEAE7),
+        backgroundColor: const Color(0xffE7E7E6),
       ),
       body: Container(
         color: const Color(0xffE7E7E6),
