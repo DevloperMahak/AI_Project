@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 
 const connectDB = async () => {
     try {
-      await mongoose.connect("mongodb://localhost:27017/askmytutor", {
+      await mongoose.connect("mongodb+srv://mahak-gupta-09:MysafePassword@cluster-askmytutor.8whvt4e.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-askmytutor", {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       });
