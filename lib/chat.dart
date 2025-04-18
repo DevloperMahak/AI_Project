@@ -13,6 +13,7 @@ class _ChatPageState extends State<ChatPage> {
   final TextEditingController _controller = TextEditingController();
   final List<Map<String, String>> _messages = [];
   late IO.Socket socket;
+  bool _isSending = false;
 
   @override
   void initState() {
@@ -43,6 +44,10 @@ class _ChatPageState extends State<ChatPage> {
     final message = _controller.text.trim();
     if (message.isEmpty) return;
 
+    setState(() {
+      _isSending = true; // Start loading
+    });
+
     // Send message to other users through the server
     socket.emit('send_message', {
       'sender': 'user',// you can replace with username or userId later
@@ -51,18 +56,19 @@ class _ChatPageState extends State<ChatPage> {
 
     setState(() {
       _messages.add({'sender': 'user', 'text': message});
-      _controller.clear();
-
-      // Simulate AI response
-      Future.delayed(const Duration(milliseconds: 500), () {
+      _controller.clear();// Clear the input after sending the message
+    });
+      // Simulate receiving response after 1 second
+      Future.delayed(const Duration(seconds: 1), () {
         setState(() {
-          _messages.add({'sender': 'bot', 'text': "I'm here to help with that!"});
+          // Update the status to 'sent'
+          _messages.last['status'] = 'sent';
+          _isSending = false; // Stop loading
         });
-      });
     });
   }
 
-  Widget _buildMessage(String text, bool isUser) {
+  Widget _buildMessage(String text, bool isUser, String status) {
     return Align(
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
@@ -72,12 +78,24 @@ class _ChatPageState extends State<ChatPage> {
           color: isUser ? Colors.deepPurple : Colors.grey.shade200,
           borderRadius: BorderRadius.circular(16),
         ),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: isUser ? Colors.white : Colors.black87,
-            fontSize: 16,
-          ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              text,
+              style: TextStyle(
+                color: isUser ? Colors.white : Colors.black87,
+                fontSize: 16,
+              ),
+            ),
+            if (status == 'sending')
+              const SizedBox(width: 10),
+            if (status == 'sending')
+              const CircularProgressIndicator(
+                color: Colors.white,
+                strokeWidth: 2,
+              ),
+          ],
         ),
       ),
     );
@@ -113,7 +131,8 @@ class _ChatPageState extends State<ChatPage> {
                   itemBuilder: (context, index) {
                     final msg = _messages[index];
                     final isUser = msg['sender'] == 'user';
-                    return _buildMessage(msg['text']!, isUser);
+                    final status = msg['status'] ?? 'sent'; // Default to 'sent' if status is not defined
+                    return _buildMessage(msg['text']!, isUser,status);
                   },
                 ),
               ),

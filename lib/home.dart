@@ -230,7 +230,7 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
             const SizedBox(height: 30),
             Center(
                 child: Image.asset(
-                    'assets/images/Technical support wearing glasses.png')),
+                    'assets/images/askmytutorimage.png')),
             const SizedBox(height: 30),
             const Text(
               'Welcome to AskMyTutor!',
