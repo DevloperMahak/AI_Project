@@ -47,6 +47,8 @@ app.use(express.json());// Parses incoming JSON bodies
 app.use(cors(
   {
     origin: 'https://askmytutor-o75xlnady-devlopermahaks-projects.vercel.app',  // replace with your frontend URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
   }
 ));// Enables cross-origin requests
 
