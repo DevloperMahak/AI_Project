@@ -58,7 +58,7 @@ app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 app.use('/api/user', userRoutes);
 
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on port ${PORT}`); //This allows access from other devices in the network.
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`); //This allows Run both Express and Socket.IO properly from other devices in the network.
 });
 
