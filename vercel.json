@@ -1,14 +1,11 @@
 {
-  "builds": [
+  "rewrites": [
     {
-      "src": "build/web/index.html",
-      "use": "@vercel/static"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ]
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "outputDirectory": "build/web"
 }
