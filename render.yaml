@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: askmytutor
+    env: node
+    buildCommand: |
+      curl -fsSL https://storage.googleapis.com/download.flutter.io/flutter_linux_v2.8.0-stable.tar.xz -o flutter.tar.xz
+      tar -xf flutter.tar.xz
+      export PATH="$PATH:`pwd`/flutter/bin"
+      flutter doctor
+      flutter build web
+    startCommand: flutter serve --web-port 10000
+    envVars:
+      - key: FLUTTER_HOME
+        value: $PWD/flutter
