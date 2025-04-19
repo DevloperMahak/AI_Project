@@ -47,3 +47,4 @@ app.*.map.json
 # Node.js
 askmytutor_backend/node_modules/
 askmytutor_backend/.env
+.vercel
