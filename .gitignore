@@ -48,3 +48,5 @@ app.*.map.json
 askmytutor_backend/node_modules/
 askmytutor_backend/.env
 .vercel
+
+askmytutor-web-deploy/
