@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
-const { extractTextFromImage,getAnswer,signupUser,loginUserController } = require('../controllers/userController');
+const { extractTextFromImage,getAnswer,signupUser,loginUserController,forgotPassword } = require('../controllers/userController');
 
 const router = express.Router();
 
@@ -34,6 +34,14 @@ router.post('/signup', signupUser);
 
 // Route to handle user login
 router.post('/login', loginUserController);
+
+router.post("/forgot-password", forgotPassword);
+
+router.get('/user', async (req, res) => {
+  const email = req.query.email;
+  // fetch and return user details using email
+});
+
 
 
 module.exports = router;
