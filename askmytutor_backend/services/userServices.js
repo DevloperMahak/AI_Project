@@ -132,7 +132,7 @@ const sendResetLink = async (email) => {
   const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '15m' });
 
   // Simulate sending email (log the reset link)
-  console.log(`Send email to ${email} with reset link: https://askmytutor-o75xlnady-devlopermahaks-projects.vercel.app/forgotpassword?token=${token}`);
+  console.log(`Send email to ${email} with reset link: https://askmytutor-l6m0nu1np-devlopermahaks-projects.vercel.app/forgotpassword?token=${token}`);
 
   return { status: true, message: "Reset link sent" };
 };
