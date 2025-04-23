@@ -46,7 +46,7 @@ app.use(express.json());// Parses incoming JSON bodies
 // Allow requests from your frontend URL
 app.use(cors(
   {
-    origin: 'https://askmytutor-o75xlnady-devlopermahaks-projects.vercel.app',  // replace with your frontend URL
+    origin: 'https://askmytutor-l6m0nu1np-devlopermahaks-projects.vercel.app ',  // replace with your frontend URL
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
   }
