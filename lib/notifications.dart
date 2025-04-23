@@ -80,8 +80,8 @@ class NotificationTile extends StatelessWidget {
       elevation: 3,
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: Colors.blue.shade100,
-          child: Icon(notification.icon, color: Colors.blue),
+          backgroundColor: Colors.purple.shade100,
+          child: Icon(notification.icon, color: Color(0xff5F2C82)),
         ),
         title: Text(notification.title),
         subtitle: Text(notification.description),
