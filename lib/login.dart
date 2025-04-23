@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:ask_my_tutor/forgotPassword.dart';
 import 'package:ask_my_tutor/main_screen.dart';
 import 'package:ask_my_tutor/signUp.dart';
 import 'package:ask_my_tutor/uihelper.dart';
 import 'package:ask_my_tutor/url.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -168,7 +170,12 @@ class LoginPageState extends State<LoginPage> {
                         Align(
                           alignment: Alignment.center,
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const ForgotPasswordPage()),
+                              );
+                            },
                             onDoubleTap: () {
                               print("tapped");
                             },
@@ -186,11 +193,29 @@ class LoginPageState extends State<LoginPage> {
                         }, "Login"),
 
                         const SizedBox(height: 10),
-                        const Text(
-                          "Don’t have an account ? Sign Up",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 12,color: Colors.white),
+                        RichText(
+                          text: TextSpan(
+                            text: "Don’t have an account? ",
+                            style: TextStyle(fontSize: 12, color: Colors.white),
+                            children: [
+                              TextSpan(
+                                text: "Sign Up",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  decoration: TextDecoration.underline,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const SignUpPage()),
+                                    );
+                                  },
+                              ),
+                            ],
+                          ),
                         ),
+
                         const SizedBox(height: 10),
                         const Divider(
                           height: 5,

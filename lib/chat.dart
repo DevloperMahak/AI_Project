@@ -107,6 +107,7 @@ class _ChatPageState extends State<ChatPage> {
         resizeToAvoidBottomInset: true, // ✅ Ensures layout adjusts with keyboard
         appBar: AppBar(
           title: const Text('Student Chat'),
+          centerTitle: true,
           backgroundColor: Color(0xff5F2C82),
           foregroundColor: Colors.white,
           flexibleSpace: Container(

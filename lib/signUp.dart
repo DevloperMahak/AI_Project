@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/gestures.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ask_my_tutor/login.dart';
 import 'package:ask_my_tutor/main_screen.dart';
@@ -246,11 +247,28 @@ class _SignUpPageState extends State<SignUpPage> {
                  // Add login logic
                }, "Sign Up"),
              const SizedBox(height: 10),
-             const Text(
-               "Already have an account ? Log In",
-               textAlign: TextAlign.center,
-               style: TextStyle(fontSize: 12,color: Colors.white),
-             ),
+               RichText(
+                 text: TextSpan(
+                   text: "Already have an account ? ",
+                   style: TextStyle(fontSize: 12, color: Colors.white),
+                   children: [
+                     TextSpan(
+                       text: "Log In",
+                       style: TextStyle(
+                         fontWeight: FontWeight.bold,
+                         decoration: TextDecoration.underline,
+                       ),
+                       recognizer: TapGestureRecognizer()
+                         ..onTap = () {
+                           Navigator.push(
+                             context,
+                             MaterialPageRoute(builder: (context) => const LoginPage()),
+                           );
+                         },
+                     ),
+                   ],
+                 ),
+               ),
              const SizedBox(height: 10),
              const Divider(
                height: 5,

@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
+import 'notifications.dart';
+
 class AskMeHomePage extends StatefulWidget {
 
   const AskMeHomePage({Key? key}) : super(key: key);
@@ -219,7 +221,21 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
           ),
         ),
       ),
-
+          actions: [
+          InkWell(
+          onTap: () {
+    Navigator.push(context,
+    MaterialPageRoute(
+    builder: (context) =>
+        NotificationPage()));
+    },
+        child: Padding(
+        padding: EdgeInsets.only(
+        right:10 ),
+    child: Icon(
+    Icons.notifications, size: 28,
+    color: Colors.white,))
+          )],
       ),
       body:SafeArea(
     child: SingleChildScrollView(
