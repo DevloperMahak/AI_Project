@@ -121,4 +121,21 @@ console.log("Password from DB length:", user.password.length);
   return { user, token };
 };
 
-module.exports = { performOCR, askGROQ , createUser, loginUser};
+const sendResetLink = async (email) => {
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return { status: false, message: "User not found" };
+  }
+
+  // Generate a JWT token valid for 15 minutes
+  const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '15m' });
+
+  // Simulate sending email (log the reset link)
+  console.log(`Send email to ${email} with reset link: https://askmytutor-o75xlnady-devlopermahaks-projects.vercel.app/forgotpassword?token=${token}`);
+
+  return { status: true, message: "Reset link sent" };
+};
+
+
+module.exports = { performOCR, askGROQ , createUser, loginUser, sendResetLink,};
