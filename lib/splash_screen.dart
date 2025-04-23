@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ask_my_tutor/home.dart';
 import 'package:ask_my_tutor/login.dart';
 import 'package:flutter/material.dart';
 
@@ -17,22 +18,25 @@ class SplashScreen extends StatefulWidget {
 class SplashScreenPage extends State<SplashScreen> {
   @override
   void initState() {
+    getValidationData().whenComplete(()async{
+      Timer(Duration(seconds: 5),(){
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context)=>(finalEmail == null ? LoginPage(): MainScreen())
+            ));
+      });
+    });
     super.initState();
-    _checkLoginStatus();
   }
 
-  Future<void> _checkLoginStatus() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    finalEmail = prefs.getString('email');
-    print('Saved email: $finalEmail');
-
-    // Wait for splash duration
-    Timer(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginPage()),
-      );
+  Future getValidationData()async{
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var obtainedEmail = sharedPreferences.getString('email');
+    setState(() {
+      finalEmail = obtainedEmail;
     });
+    print(finalEmail);
   }
 
 
