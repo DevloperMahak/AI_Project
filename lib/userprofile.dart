@@ -4,6 +4,8 @@ import 'package:ask_my_tutor/url.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'login.dart';
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -23,7 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> fetchUserDetails() async {
     final prefs = await SharedPreferences.getInstance();
-    final storedEmail = prefs.getString('user_email');
+    final storedEmail = prefs.getString('email');
 
     print('Stored Email: $storedEmail'); // Debugging
 
@@ -100,8 +102,16 @@ class _ProfilePageState extends State<ProfilePage> {
             ListTile(
               leading: const Icon(Icons.logout, color:Color(0xff5F2C82)),
               title: const Text('Logout'),
-              onTap: () {
+              onTap: () async  {
                 // Add logout logic
+                  final SharedPreferences sharedPreferences =
+                      await SharedPreferences.getInstance();
+                  sharedPreferences.remove('email');
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LoginPage(),
+                      ));
               },
             ),
           ],
