@@ -1,4 +1,4 @@
-const { performOCR , askGROQ , createUser,loginUser} = require('../services/userServices');
+const { performOCR , askGROQ , createUser,loginUser, sendResetLink,} = require('../services/userServices');
 const sharp = require('sharp');  // Use sharp for image preprocessing
 const path = require('path');
 
@@ -126,9 +126,26 @@ const loginUserController = async (req, res) => {
   }
 };
 
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const result = await authService.sendResetLink(email);
+    if (!result.status) {
+      return res.status(404).json(result);
+    }
+
+    return res.json(result);
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    return res.status(500).json({ status: false, message: "Server error" });
+  }
+};
+
 module.exports = {
   extractTextFromImage,
   getAnswer,
   signupUser,
-  loginUserController
+  loginUserController,
+  forgotPassword,
 };
