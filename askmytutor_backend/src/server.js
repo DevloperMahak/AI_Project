@@ -55,6 +55,11 @@ app.use(cors(
 // ✅ Serve uploads statically from root-level path
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
+// ✅ Health route (used by UptimeRobot)
+app.get('/health', (req, res) => {
+  res.status(200).send('Server is alive 🚀');
+});
+
 app.use('/api/user', userRoutes);
 
 
