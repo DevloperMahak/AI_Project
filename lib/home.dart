@@ -7,27 +7,52 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'history.dart';
 import 'notifications.dart';
+import 'models/history_item.dart';
+
 
 class AskMeHomePage extends StatefulWidget {
-
-  const AskMeHomePage({Key? key}) : super(key: key);
+  final VoidCallback? onHistoryUpdated;
+  const AskMeHomePage({Key? key, this.onHistoryUpdated}) : super(key: key);
 
   @override
   State<AskMeHomePage> createState() => _AskMeHomePageState();
 }
 
-
 class _AskMeHomePageState extends State<AskMeHomePage> {
   String? aiResponse = "Hi! I'm your tutor. Ask me anything using voice or image.";
   final TextEditingController _textController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
+  bool isLoading = false;
   File? _pickedImage ;
   bool _isListening = false;
   late stt.SpeechToText _speech;
   String _spokenText = "";
   int _rotationAngle = 0; // degrees
+
+  List<HistoryItem> historyList = [];
+
+  // Call this method whenever you update SharedPreferences
+  Future<void> _saveToHistory(String question, String answer) async {
+    final prefs = await SharedPreferences.getInstance();
+    final history = prefs.getStringList('history') ?? [];
+
+    final newEntry = HistoryItem(
+      question: question,
+      answer: answer,
+      isExpanded: false,
+    );
+
+    history.add(json.encode(newEntry.toJson()));
+    await prefs.setStringList('history', history);
+
+    // Trigger history reload in MainScreen
+    if (widget.onHistoryUpdated != null) {
+      widget.onHistoryUpdated!();
+    }
+  }
 
 // Text-to-Speech instance
   FlutterTts _flutterTts = FlutterTts();
@@ -45,6 +70,18 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
     _flutterTts.setLanguage("en-US");  // You can set the language to your preference
     _flutterTts.setSpeechRate(0.5);  // Adjust the speech rate if needed
     _flutterTts.setVolume(1.0);  // Set the volume to maximum
+    _loadHistory(); // Load saved history here
+  }
+  Future<void> _loadHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String>? savedList = prefs.getStringList('history');
+    if (savedList != null) {
+      setState(() {
+        historyList = savedList
+            .map((item) => HistoryItem.fromJson(json.decode(item)))
+            .toList();
+      });
+    }
   }
 
   void _showImagePickerOptions() {
@@ -199,6 +236,34 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
   void _stopListening() {
     _speech.stop();
     setState(() => _isListening = false);
+  }
+
+  Future<void> askQuestion() async {
+    if (_textController.text.trim().isEmpty) return;
+    final input = _textController.text.trim();
+    setState(() => isLoading = true);
+
+    if (input.isNotEmpty) {
+      setState(() {
+        aiResponse = "Thinking...";
+      });
+      await sendPromptToGROQ(input);
+    }
+
+    // After getting response, add to history
+    setState(() {
+      historyList.add(
+        HistoryItem(
+          question: input,
+          answer: aiResponse ?? '',
+        ),
+      );
+      _textController.clear();
+      isLoading = false;
+    });
+    //await _saveHistory(); // Save history to shared preferences
+    await _saveToHistory(input, aiResponse ?? '');
+
   }
 
   @override
@@ -381,13 +446,7 @@ class _AskMeHomePageState extends State<AskMeHomePage> {
                             IconButton(
                               icon: const Icon(Icons.send, color: Color(0xff3D4652)),
                               onPressed: () {
-                                final input = _textController.text.trim();
-                                if (input.isNotEmpty) {
-                                  setState(() {
-                                    aiResponse = "Thinking...";
-                                  });
-                                  sendPromptToGROQ(input);
-                                }
+                                askQuestion();
                               },
                             ),
                           ],

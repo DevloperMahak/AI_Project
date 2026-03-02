@@ -2,10 +2,13 @@ import 'package:ask_my_tutor/userprofile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
-
 import 'chat.dart';
 import 'history.dart';
 import 'home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'models/history_item.dart';
+import 'dart:convert';
+
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -19,7 +22,8 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   FlutterTts flutterTts = FlutterTts(); // Initialize flutter_tts instance
   bool _isSpeaking = false; // Track if TTS is speaking
 
-  final List<Widget> _pages = const [AskMeHomePage(), HistoryPage(),ChatPage(), ProfilePage()];
+  List<HistoryItem> _historyList = [];
+
 
   final iconList = <IconData>[
     Icons.home_rounded,
@@ -31,7 +35,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
+    _loadHistory();
     // Set handlers to track speech state
     flutterTts.setStartHandler(() {
       setState(() {
@@ -50,6 +54,13 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         _isSpeaking = false;
       });
     });
+    }
+    void _loadHistory() async {
+      final prefs = await SharedPreferences.getInstance();
+      final historyJson = prefs.getStringList('history') ?? [];
+      setState(() {
+        _historyList = historyJson.map((item) => HistoryItem.fromJson(json.decode(item))).toList();
+      });
   }
 
   // Function to speak the answer
@@ -62,6 +73,14 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+
+    final List<Widget> _pages = [
+      AskMeHomePage(onHistoryUpdated: _loadHistory),
+      HistoryPage(historyList: _historyList),
+      ChatPage(),
+      ProfilePage(),
+    ];
+
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = Theme.of(context).scaffoldBackgroundColor;
     final activeColor = Colors.deepPurple;
