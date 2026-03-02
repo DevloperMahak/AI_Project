@@ -1,4 +1,4 @@
-final url = 'https://askmytutor.onrender.com/api/user/';
+final url = 'https://askmytutor-backend.onrender.com/api/user/';
 final doubt = url + "ask";
 final doubt_img = url + "upload-image";
 final sign_up = url + "signup";
